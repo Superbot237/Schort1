@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meu Chat Web</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#25d366">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+body{display:flex;justify-content:center;align-items:center;height:100vh;background:linear-gradient(135deg,#e3f0ff,#ffffff);}
+.container{text-align:center;background:white;padding:50px;border-radius:30px;box-shadow:0 20px 40px rgba(0,0,0,0.15);width:350px;animation:fadeIn 0.7s ease;}
+h1{color:#25d366;margin-bottom:30px;font-weight:700;font-size:2rem;}
+a.btn{display:inline-block;text-decoration:none;background:#25d366;color:white;padding:15px 30px;border-radius:15px;font-weight:700;transition:0.3s;}
+a.btn:hover{background:#1ebe5b;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+</style>
+<script>
+if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worker.js').then(()=>console.log('SW registrado')).catch(e=>console.log(e));}
+</script>
+</head>
+<body>
+<div class="container">
+  <h1>Bem-vindo ao Meu Chat Web</h1>
+  <a href="login.html" class="btn">Login / Registrar</a>
+  <p style="margin-top:15px;font-size:0.9rem;color:#555;">Controle total de acesso</p>
+</div>
+</body>
+</html>

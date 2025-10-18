@@ -1,0 +1,16 @@
+<input id="telefone" placeholder="Digite seu número">
+<button onclick="enviarPedido()">Enviar pedido</button>
+
+<script>
+function enviarPedido(){
+  const numero = document.getElementById('telefone').value.trim();
+  if(!numero) return alert("Digite um número válido");
+
+  // salva o pedido no localStorage (simulação)
+  let pedidos = JSON.parse(localStorage.getItem("pedidosLogin")) || [];
+  pedidos.push({ numero, status: "pendente" });
+  localStorage.setItem("pedidosLogin", JSON.stringify(pedidos));
+
+  alert("Pedido enviado! Aguarde aprovação.");
+}
+</script>

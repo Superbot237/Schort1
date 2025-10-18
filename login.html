@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Meu Chat Web</title>
+<style>
+body{display:flex;justify-content:center;align-items:center;height:100vh;background:linear-gradient(135deg,#89f7fe,#66a6ff);margin:0;font-family:'Inter',sans-serif;}
+.login{background:white;padding:50px 40px;border-radius:30px;box-shadow:0 20px 40px rgba(0,0,0,0.15);width:360px;text-align:center;}
+.login h2{color:#25d366;margin-bottom:30px;font-size:1.8rem;font-weight:700;letter-spacing:1px;}
+.login input{width:100%;padding:15px;margin:10px 0;border-radius:15px;border:1px solid #ddd;font-size:1rem;}
+.login button{width:100%;padding:15px;margin-top:10px;background:#25d366;color:white;border:none;border-radius:15px;font-weight:700;font-size:1rem;cursor:pointer;}
+#errorMsg{color:red;font-size:0.9rem;margin-top:10px;}
+#opcoesAdmin{margin-top:20px;text-align:center;display:none;}
+#opcoesAdmin h3{color:#ff4081;margin-bottom:15px;}
+#opcoesAdmin button{width:48%;margin:5px;padding:12px;border:none;border-radius:15px;font-weight:700;background:#ff4081;color:white;cursor:pointer;}
+#opcoesAdmin button:hover{background:#e03575;}
+</style>
+</head>
+<body>
+<div class="login">
+<h2>Login / Registro</h2>
+<input type="text" id="telefone" placeholder="Número de telefone">
+<input type="password" id="senha" placeholder="Senha">
+<button onclick="login()">Entrar</button>
+<p id="errorMsg"></p>
+
+<div id="opcoesAdmin">
+  <h3>Admin Zone</h3>
+  <button onclick="irAdminPainel()">Admin Painel</button>
+  <button onclick="irChat()">Chat</button>
+</div>
+</div>
+
+<script>
+function login(){
+  const tel = document.getElementById('telefone').value.trim();
+  const senha = document.getElementById('senha').value.trim();
+  const erro = document.getElementById('errorMsg');
+  const adminZone = document.getElementById('opcoesAdmin');
+
+  erro.textContent = "";
+  adminZone.style.display = "none";
+
+  // ADMIN DIRETO
+  if(tel === "urielfereir"){
+    if(senha === "atalanga247"){
+      adminZone.style.display = "block";
+      return;
+    } else {
+      erro.textContent = "Sai man, se não é admin";
+      setTimeout(()=>{window.location.href="login.html";},3000);
+      return;
+    }
+  }
+
+  // USUÁRIO COMUM
+  let pedidos = JSON.parse(localStorage.getItem("pedidosLogin")) || [];
+  const existente = pedidos.find(p => p.telefone === tel);
+
+  if(existente){
+    // Verifica se a senha está correta
+    if(existente.senha === senha){
+      if(existente.status === "aprovado"){
+        localStorage.setItem('loggedUser', JSON.stringify(existente));
+        window.location.href = "chat.html";
+        return;
+      } else {
+        erro.textContent = "Seu pedido ainda está pendente";
+        return;
+      }
+    } else {
+      erro.textContent = "Senha incorreta!";
+      return;
+    }
+  }
+
+  // Novo usuário → solicita senha para registro
+  let novaSenha = prompt("Digite uma senha para seu cadastro:");
+  if(!novaSenha) return;
+
+  pedidos.push({telefone: tel, senha: novaSenha, status: "pendente", nome: null, foto: null});
+  localStorage.setItem("pedidosLogin", JSON.stringify(pedidos));
+  alert("Pedido enviado! Aguarde aprovação.");
+}
+function irAdminPainel(){ window.location.href = "aprovacao.html"; }
+function irChat(){ window.location.href = "chat.html"; }
+</script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Meu Chat Web</title>
+<style>
+body{display:flex;justify-content:center;align-items:center;height:100vh;background:linear-gradient(135deg,#89f7fe,#66a6ff);margin:0;font-family:'Inter',sans-serif;}
+.login{background:white;padding:50px 40px;border-radius:30px;box-shadow:0 20px 40px rgba(0,0,0,0.15);width:360px;text-align:center;animation:popIn 0.7s ease;}
+.login h2{color:#25d366;margin-bottom:30px;font-size:1.8rem;font-weight:700;letter-spacing:1px;}
+.login input{width:100%;padding:15px;margin:10px 0;border-radius:15px;border:1px solid #ddd;font-size:1rem;transition:0.3s;}
+.login input:focus{border-color:#25d366;box-shadow:0 0 10px rgba(37,211,102,0.3);outline:none;}
+.login button{width:100%;padding:15px;margin-top:10px;background:#25d366;color:white;border:none;border-radius:15px;font-weight:700;font-size:1rem;cursor:pointer;transition:0.3s;}
+.login button:hover{background:#1ebe5b;transform:scale(1.03);}
+.hidden{display:none;}
+#errorMsg{color:red;font-size:0.9rem;margin-top:10px;}
+#opcoesAdmin{margin-top:20px;}
+#opcoesAdmin button{width:48%;margin:5px;}
+@keyframes popIn{from{opacity:0;transform:scale(0.8);}to{opacity:1;transform:scale(1);}}
+</style>
+</head>
+<body>
+<div class="login">
+<h2>Login / Registro</h2>
+<input type="text" id="telefone" placeholder="Número de telefone">
+<input type="password" id="senha" placeholder="Senha">
+<button onclick="login()">Entrar</button>
+<p id="errorMsg" class="hidden"></p>
+
+<div id="opcoesAdmin" class="hidden">
+  <button onclick="irAdminPainel()">Admin Painel</button>
+  <button onclick="irChat()">Chat</button>
+</div>
+</div>
+
+<script>
+function login(){
+  const tel=document.getElementById('telefone').value.trim();
+  const senha=document.getElementById('senha').value.trim();
+  const erro=document.getElementById('errorMsg');
+
+  // Admin
+  if(tel==="urielfereir" && senha==="atalanga247"){
+    erro.classList.add("hidden");
+    document.getElementById('opcoesAdmin').classList.remove("hidden");
+    return;
+  }
+
+  // Se digitou errado admin
+  if(tel!=="urielfereir" || senha!=="atalanga247"){
+    erro.textContent="Sai man, se não é admin";
+    erro.classList.remove("hidden");
+    setTimeout(()=>{
+      window.location.href="login.html"; // volta ao login normal
+    },3000);
+    return;
+  }
+
+  // Usuário comum - aqui pode colocar fluxo de aprovação normal
+  let pedidos = JSON.parse(localStorage.getItem("pedidosLogin"))||[];
+  const existente = pedidos.find(p=>p.telefone===tel);
+  if(existente){
+    if(existente.status==="aprovado"){
+      alert("Você já foi aprovado! Entrando no chat...");
+      localStorage.setItem('loggedUser',JSON.stringify(existente));
+      window.location.href="chat.html";
+      return;
+    }
+    if(existente.status==="pendente"){
+      alert("Seu pedido já está pendente! Aguarde aprovação.");
+      return;
+    }
+  }
+
+  // Se novo usuário, adiciona pedido pendente
+  pedidos.push({telefone:tel,senha:senha,status:"pendente",nome:null,foto:null});
+  localStorage.setItem("pedidosLogin",JSON.stringify(pedidos));
+  alert("Pedido enviado! Aguarde aprovação.");
+}
+
+// Redirecionamento admin
+function irAdminPainel(){window.location.href="aprovacao.html";}
+function irChat(){window.location.href="chat.html";}
+</script>
+</body>
+</html>

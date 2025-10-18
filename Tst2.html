@@ -1,0 +1,31 @@
+<div id="pedidos"></div>
+
+<script>
+function carregarPedidos(){
+  const pedidos = JSON.parse(localStorage.getItem("pedidosLogin")) || [];
+  const container = document.getElementById("pedidos");
+  container.innerHTML = "";
+
+  pedidos.forEach((p, index) => {
+    const div = document.createElement("div");
+    div.textContent = `Número: ${p.numero} | Status: ${p.status}`;
+    if(p.status === "pendente"){
+      const aceitar = document.createElement("button");
+      aceitar.textContent = "Aceitar";
+      aceitar.onclick = () => aprovarPedido(index);
+      div.appendChild(aceitar);
+    }
+    container.appendChild(div);
+  });
+}
+
+function aprovarPedido(index){
+  let pedidos = JSON.parse(localStorage.getItem("pedidosLogin"));
+  pedidos[index].status = "aprovado";
+  localStorage.setItem("pedidosLogin", JSON.stringify(pedidos));
+  alert("Pedido aprovado! O usuário agora pode entrar.");
+  carregarPedidos();
+}
+
+carregarPedidos();
+</script>

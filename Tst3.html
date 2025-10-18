@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Chat Web</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#25d366">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Inter', sans-serif; }
+    body {
+      display:flex; justify-content:center; align-items:center;
+      height:100vh; background: linear-gradient(135deg,#e3f0ff,#ffffff);
+    }
+    .container {
+      text-align:center; background:white; padding:40px;
+      border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.1); width:350px;
+      animation:fadeIn 0.8s ease;
+    }
+    h1 { color:#25d366; margin-bottom:30px; font-weight:600; }
+    p { margin-bottom:20px; font-size:1rem; color:#333; }
+    a.btn {
+      display:inline-block; text-decoration:none; background:#25d366; color:white;
+      padding:12px 24px; border-radius:12px; font-weight:600; transition:0.3s;
+    }
+    a.btn:hover { background:#1ebe5b; }
+    @keyframes fadeIn { from {opacity:0; transform:translateY(15px);} to {opacity:1; transform:translateY(0);} }
+  </style>
+
+  <script>
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker.register('service-worker.js')
+        .then(()=> console.log('Service Worker registrado'))
+        .catch(err => console.log('Erro SW:', err));
+    }
+  </script>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Bem-vindo ao Meu Chat Web</h1>
+    <p>Entre com seu número de telefone para acessar o chat.</p>
+    <a href="login.html" class="btn">Login por número</a>
+    <p style="margin-top:20px; font-size:0.9rem;">Controle total de acesso, sem bot nem IA.</p>
+  </div>
+
+</body>
+</html>
